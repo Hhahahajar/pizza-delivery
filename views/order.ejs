@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Page</title>
+    <link rel="stylesheet" href="/order.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="/">Pizza Shop</a>
+            </div>
+            <div class="nav-links">
+                <a href="/logout">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Place Your Order</h1>
+        
+        <!-- Pizza Order Form -->
+        <form id="order-form" action="/order" method="POST">
+            <div class="pizza-list">
+                <div class="pizza-item">
+                    <h2>Pizza Margherita</h2>
+                    <p>Price: $10</p>
+                    <input type="number" name="pizzas[0][quantity]" data-name="Pizza Margherita" data-price="10" min="0" value="0">
+                </div>
+                <div class="pizza-item">
+                    <h2>Pizza Pepperoni</h2>
+                    <p>Price: $12</p>
+                    <input type="number" name="pizzas[1][quantity]" data-name="Pizza Pepperoni" data-price="12" min="0" value="0">
+                </div>
+                <div class="pizza-item">
+                    <h2>Pizza Veggie Delight</h2>
+                    <p>Price: $11</p>
+                    <input type="number" name="pizzas[2][quantity]" data-name="Pizza Veggie Delight" data-price="11" min="0" value="0">
+                </div>
+            </div>
+            <button type="submit">Review Order</button>
+        </form>
+
+        <!-- Order Summary -->
+        <div id="order-summary" style="display:none;">
+            <h2>Order Summary</h2>
+            <ul id="order-list"></ul>
+            <p>Total: $<span id="order-total">0.00</span></p>
+            <button id="confirm-order-btn">Confirm Order</button>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle order submission and confirmation -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const orderForm = document.getElementById('order-form');
+            const orderSummary = document.getElementById('order-summary');
+            const orderList = document.getElementById('order-list');
+            const orderTotal = document.getElementById('order-total');
+            const confirmOrderBtn = document.getElementById('confirm-order-btn');
+
+            orderForm.addEventListener('submit', function(event) {
+                event.preventDefault();
+                const quantities = orderForm.querySelectorAll('input[type="number"]');
+                let orderItems = [];
+                let total = 0;
+
+                quantities.forEach(input => {
+                    const name = input.getAttribute('data-name');
+                    const price = parseFloat(input.getAttribute('data-price'));
+                    const quantity = parseInt(input.value);
+                    if (quantity > 0) {
+                        orderItems.push({ name, price, quantity });
+                        total += price * quantity;
+                    }
+                });
+
+                if (orderItems.length > 0) {
+                    orderList.innerHTML = '';
+                    orderItems.forEach(item => {
+                        const li = document.createElement('li');
+                        li.textContent = `${item.name} - $${item.price} x ${item.quantity}`;
+                        orderList.appendChild(li);
+                    });
+                    orderTotal.textContent = total.toFixed(2);
+                    orderSummary.style.display = 'block';
+                } else {
+                    alert('Please select at least one pizza.');
+                }
+            });
+
+            confirmOrderBtn.addEventListener('click', function() {
+                const orderItems = [];
+                let total = 0;
+
+                document.querySelectorAll('.pizza-item input[type="number"]').forEach(input => {
+                    const name = input.getAttribute('data-name');
+                    const price = parseFloat(input.getAttribute('data-price'));
+                    const quantity = parseInt(input.value);
+                    if (quantity > 0) {
+                        orderItems.push({ name, price, quantity });
+                        total += price * quantity;
+                    }
+                });
+
+                const orderDetails = { items: orderItems, total };
+
+                fetch('/confirm-order', {
+    method: 'POST',
+    headers: {
+        'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(orderDetails)
+})
+.then(response => response.json())
+.then(data => {
+    if (data.success) {
+        // Redirect to confirmation page with order details
+        window.location.href = `/confirmation?username=${data.username}&orderItems=${encodeURIComponent(JSON.stringify(data.orderItems))}&orderTotal=${data.orderTotal}`;
+    } else {
+        alert('Order confirmation failed.');
+    }
+})
+.catch(error => {
+    console.error('Error:', error);
+});
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,74 @@
+<!-- login.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <link rel="stylesheet" href="/login.css">
+</head>
+<body>
+    <div id="app">
+        <div class="form-container">
+            <h2>Login</h2>
+            <div v-if="errorMessage" class="error-message">{{ errorMessage }}</div>
+            <form @submit.prevent="submitForm">
+                <div class="form-group">
+                    <label for="name">Username:</label>
+                    <input type="text" id="name" v-model="username" placeholder="Enter your name" required>    
+                </div> 
+                <div class="form-group">
+                    <label for="password">Password:</label>
+                    <input type="password" v-model="password" placeholder="password" required>
+                </div>
+                <button type="submit" class="submit-btn">Login</button>
+            </form>
+            <p>Don't have an account? <a href="/register">Register</a></p>
+            <p>Forgot Password? <a href="/recovery">Forgot password</a></p>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    username: '',
+                    password: '',
+                    errorMessage: ''
+                };
+            },
+            methods: {
+                async submitForm() {
+                    try {
+                        const response = await fetch('/login', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                username: this.username,
+                                password: this.password
+                            }),
+                        });
+
+                        if (!response.ok) {
+                            throw new Error(`Login failed with status: ${response.status}`);
+                        }
+
+                        // Save the username in localStorage
+                        localStorage.setItem('username', this.username);
+
+                        window.location.href = '/dashboard'; // Redirect on successful login
+
+                    } catch (error) {
+                        console.error('Login error:', error);
+                        this.errorMessage = 'Invalid username or password';
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>

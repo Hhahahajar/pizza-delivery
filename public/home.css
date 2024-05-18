@@ -1,0 +1,92 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #fff;
+    color: #333;
+}
+
+/* Navigation bar styles */
+.navbar {
+    background-color: #FFD700; /* Gold */
+    color: #333;
+    padding: 10px 0;
+    text-align: center;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.logo a {
+    color: #333;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.nav-links a {
+    color: #333;
+    text-decoration: none;
+    margin-left: 20px;
+}
+
+/* Main container styles */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Heading styles */
+h1 {
+    color: #FF4500; /* OrangeRed */
+    margin-bottom: 20px;
+}
+
+/* Pizza listing styles */
+.pizza-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.pizza-item {
+    background-color: #FF6347; /* Tomato */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.pizza-item h2 {
+    color: #fff;
+    margin-bottom: 10px;
+}
+
+.pizza-item p {
+    color: #fff;
+    margin-bottom: 15px;
+}
+
+.add-to-order-btn {
+    background-color: #32CD32; /* LimeGreen */
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-to-order-btn:hover {
+    background-color: #228B22; /* ForestGreen */
+}
+

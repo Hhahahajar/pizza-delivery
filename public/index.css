@@ -1,0 +1,101 @@
+/* Reset default styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Body styles */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+/* Navigation Bar styles */
+.navbar {
+    background-color: #f8e71c; /* Yellow */
+    padding: 10px 0;
+}
+
+.navbar .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.navbar .logo a {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.navbar .nav-links a {
+    margin-left: 20px;
+    font-size: 18px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+}
+
+.navbar .nav-links a:hover {
+    color: #f8e71c; /* Yellow */
+}
+
+/* Main Content styles */
+.container {
+    max-width: 960px;
+    margin: 20px auto;
+    padding: 0 20px;
+}
+
+.container h1 {
+    font-size: 36px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Pizza Listings styles */
+.pizza-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
+
+.pizza-item {
+    background-color: #3cb371; /* Green */
+    padding: 20px;
+    border-radius: 10px;
+    width: calc(33.33% - 20px);
+}
+
+.pizza-item h2 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.pizza-item p {
+    font-size: 18px;
+    color: #fff;
+}
+
+.pizza-item .add-to-order-btn {
+    margin-top: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    color: #fff;
+    background-color: #e74c3c; /* Red */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.pizza-item .add-to-order-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

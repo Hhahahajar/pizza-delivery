@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pizza Delivery Service</title>
+    <link rel="stylesheet" href="home.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="logo">
+                <a href="/">Pizza Shop</a>
+            </div>
+            <div class="nav-links">
+                <a href="/order">Order</a>
+                <a href="/logout">Logout</a> <!-- Logout link -->
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container">
+        <h1>Welcome to Pizza Shop!</h1>
+        
+        <!-- Pizza Listings -->
+        <div class="pizza-list">
+            <div class="pizza-item">
+                <h2>Pizza Margherita</h2>
+                <p>Price: $10</p>
+                <button class="add-to-order-btn" data-name="Pizza Margherita" data-price="10">Add to Order</button>
+            </div>
+            <div class="pizza-item">
+                <h2>Pizza Pepperoni</h2>
+                <p>Price: $12</p>
+                <button class="add-to-order-btn" data-name="Pizza Pepperoni" data-price="12">Add to Order</button>
+            </div>
+            <div class="pizza-item">
+                <h2>Pizza Veggie Delight</h2>
+                <p>Price: $11</p>
+                <button class="add-to-order-btn" data-name="Pizza Veggie Delight" data-price="11">Add to Order</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JavaScript to handle adding pizzas to order -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addToOrderBtns = document.querySelectorAll('.add-to-order-btn');
+
+            addToOrderBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const name = btn.getAttribute('data-name');
+                    const price = parseFloat(btn.getAttribute('data-price'));
+
+                    // Check if user is logged in
+                    fetch('/checklogin')
+                        .then(response => {
+                            if (response.redirected) {
+                                // Redirect to the login page
+                                window.location.href = response.url;
+                            } else {
+                                // User is logged in, proceed to add the item to the order
+                                addToOrder(name, price);
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                        });
+                });
+            });
+
+            function addToOrder(name, price) {
+                // Redirect to the order page
+                window.location.href = '/order';
+
+                //Optional: You can still send the pizza details to the server if needed
+                fetch('/add-to-order', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name, price })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log(`Added ${name} to order for $${price}`);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+            }
+        });
+    </script>
+</body>
+</html>

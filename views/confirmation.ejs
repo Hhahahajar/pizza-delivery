@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Confirmation</title>
+    <link rel="stylesheet" href="confirmation.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Order Confirmation</h1>
+        <p>Thank you for your order, <%= username %>!</p>
+
+        <div class="receipt">
+            <h2>Receipt</h2>
+            <% if (orderItems.length > 0) { %>
+                <% orderItems.forEach(item => { %>
+                    <div class="order-item">
+                        <p><%= item.name %> - $<%= item.price %> x <%= item.quantity %></p>
+                    </div>
+                <% }); %>
+                <p class="total">Total: $<%= orderTotal.toFixed(2) %></p>
+            <% } else { %>
+                <p>No items in your order.</p>
+            <% } %>
+        </div>
+        <a href="/dashboard">Go back to home</a>
+    </div>
+</body>
+</html>
